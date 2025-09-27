@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bien-Venue</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 20px 20px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .nav-menu {
+            position: absolute;
+            right: 20px;
+            top: 100px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-item {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:last-child {
+            border-bottom: none;
+        }
+
+        .nav-item:hover {
+            color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .location-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .input-field, .select-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .select-field option {
+            background: #333;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(102, 126, 234, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .vendor-grid {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .vendor-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .vendor-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .vendor-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .vendor-location {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .vendor-services {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .service-tag {
+            background: rgba(102, 126, 234, 0.3);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            border: 1px solid rgba(102, 126, 234, 0.5);
+        }
+
+        .vendor-apply {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .vendor-apply:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 300px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .modal-text {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .show {
+            display: block;
+        }
+
+        .grid-show {
+            display: grid;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">bien-Venue</div>
+            <div class="hamburger" onclick="toggleNav()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </header>
+
+        <div class="nav-overlay" id="navOverlay" onclick="closeNav()">
+            <div class="nav-menu" onclick="event.stopPropagation()">
+                <div class="nav-item" onclick="showComingSoon('Profile')">Profile</div>
+                <div class="nav-item" onclick="showComingSoon('Sign In')">Sign In</div>
+                <div class="nav-item" onclick="showComingSoon('User Hiring')">Direct Hiring</div>
+                <div class="nav-item" onclick="showComingSoon('Payments')">Payment Settings</div>
+                <div class="nav-item" onclick="showComingSoon('Support')">Support</div>
+            </div>
+        </div>
+
+        <main class="main-content">
+            <div class="location-section">
+                <h2 class="section-title">Your Locations</h2>
+                
+                <div class="input-group">
+                    <label class="input-label">Traditional Address</label>
+                    <select class="select-field" id="traditionalState">
+                        <option value="">Select State</option>
+                        <option value="Lagos">Lagos</option>
+                        <option value="Rivers">Rivers</option>
+                        <option value="Edo">Edo</option>
+                        <option value="FCT">FCT (Abuja)</option>
+                        <option value="Cross River">Cross River</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <select class="select-field" id="traditionalZone" disabled>
+                        <option value="">Select Senatorial Zone</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Preferred Setting</label>
+                    <select class="select-field" id="preferredSetting">
+                        <option value="">Select University/Professional Setting</option>
+                        <option value="UNILAG">University of Lagos (UNILAG)</option>
+                        <option value="UNICAL">University of Calabar (UNICAL)</option>
+                        <option value="UNIBEN">University of Benin (UNIBEN)</option>
+                        <option value="Caleb">Caleb University</option>
+                        <option value="UNIABUJA">University of Abuja</option>
+                    </select>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="findNearestVendors()">Find Nearest</button>
+                    <button class="btn btn-secondary" onclick="showMarketplace()">Marketplace</button>
+                </div>
+            </div>
+
+            <div class="vendor-grid" id="vendorGrid">
+                <div class="loading-state" id="loadingState">
+                    Loading vendors...
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="comingSoonModal">
+        <div class="modal-content">
+            <div class="modal-title">Coming Soon</div>
+            <div class="modal-text" id="modalText">This feature is coming soon!</div>
+            <button class="modal-close" onclick="closeModal('comingSoonModal')">OK</button>
+        </div>
+    </div>
+
+    <div class="modal" id="applicationModal">
+        <div class="modal-content">
+            <div class="modal-title">Application Sent!</div>
+            <div class="modal-text">Your application has been sent to the agent. You'll be notified when they respond.</div>
+            <button class="modal-close" onclick="closeModal('applicationModal')">OK</button>
+        </div>
+    </div>
+
+    <script>
+        const SENATORIAL_ZONES = {
+            "Lagos": ["Lagos Central", "Lagos East", "Lagos West"],
+            "Rivers": ["Rivers East", "Rivers South-East", "Rivers West"],
+            "Edo": ["Edo Central", "Edo North", "Edo South"],
+            "FCT": ["FCT"],
+            "Cross River": ["Cross River Central", "Cross River North", "Cross River South"]
+        };
+
+        const MOCK_VENDORS = [
+            {
+                name: "TechHub Lagos",
+                location: "Lagos Central",
+                state: "Lagos",
+                services: ["internships", "tech_training"],
+                roles: ["developer", "designer", "analyst"]
+            },
+            {
+                name: "SportsPlex Nigeria",
+                location: "Lagos West",
+                state: "Lagos", 
+                services: ["sports_teams", "coaching"],
+                roles: ["athlete", "coach", "manager"]
+            },
+            {
+                name: "Marketing Minds",
+                location: "Lagos East",
+                state: "Lagos",
+                services: ["marketing_sprints", "internships"],
+                roles: ["marketer", "content_creator", "analyst"]
+            },
+            {
+                name: "Rivers Innovation Hub",
+                location: "Rivers East",
+                state: "Rivers",
+                services: ["internships", "tech_training"],
+                roles: ["developer", "engineer"]
+            },
+            {
+                name: "Caleb Ventures",
+                location: "Lagos West",
+                state: "Lagos",
+                services: ["internships", "business_development"],
+                roles: ["business_analyst", "consultant"]
+            }
+        ];
+
+        let currentView = '';
+
+        function toggleNav() {
+            const overlay = document.getElementById('navOverlay');
+            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function closeNav() {
+            document.getElementById('navOverlay').style.display = 'none';
+        }
+
+        function showComingSoon(feature) {
+            document.getElementById('modalText').textContent = `${feature} is coming soon!`;
+            document.getElementById('comingSoonModal').style.display = 'flex';
+            closeNav();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function updateSenatorialZones() {
+            const stateSelect = document.getElementById('traditionalState');
+            const zoneSelect = document.getElementById('traditionalZone');
+            const selectedState = stateSelect.value;
+
+            zoneSelect.innerHTML = '<option value="">Select Senatorial Zone</option>';
+            
+            if (selectedState && SENATORIAL_ZONES[selectedState]) {
+                zoneSelect.disabled = false;
+                SENATORIAL_ZONES[selectedState].forEach(zone => {
+                    const option = document.createElement('option');
+                    option.value = zone;
+                    option.textContent = zone;
+                    zoneSelect.appendChild(option);
+                });
+            } else {
+                zoneSelect.disabled = true;
+            }
+        }
+
+        function findNearestVendors() {
+            const traditionalState = document.getElementById('traditionalState').value;
+            const traditionalZone = document.getElementById('traditionalZone').value;
+            
+            if (!traditionalState || !traditionalZone) {
+                alert('Please select both state and senatorial zone');
+                return;
+            }
+
+            currentView = 'nearest';
+            showVendors(true);
+        }
+
+        function showMarketplace() {
+            currentView = 'marketplace';
+            showVendors(false);
+        }
+
+        function showVendors(filterByLocation) {
+            const vendorGrid = document.getElementById('vendorGrid');
+            const loadingState = document.getElementById('loadingState');
+            
+            vendorGrid.classList.add('grid-show');
+            loadingState.style.display = 'block';
+            vendorGrid.innerHTML = '<div class="loading-state">Loading vendors...</div>';
+
+            // Simulate loading
+            setTimeout(() => {
+                let vendors = MOCK_VENDORS;
+                
+                if (filterByLocation) {
+                    const selectedState = document.getElementById('traditionalState').value;
+                    vendors = vendors.filter(vendor => vendor.state === selectedState);
+                }
+
+                displayVendors(vendors);
+            }, 1000);
+        }
+
+        function displayVendors(vendors) {
+            const vendorGrid = document.getElementById('vendorGrid');
+            
+            if (vendors.length === 0) {
+                vendorGrid.innerHTML = '<div class="loading-state">No vendors found in your area. Try the marketplace!</div>';
+                return;
+            }
+
+            vendorGrid.innerHTML = vendors.map(vendor => `
+                <div class="vendor-card">
+                    <div class="vendor-name">${vendor.name}</div>
+                    <div class="vendor-location">${vendor.location}, ${vendor.state}</div>
+                    <div class="vendor-services">
+                        ${vendor.services.map(service => `<span class="service-tag">${service.replace('_', ' ')}</span>`).join('')}
+                        ${vendor.roles.map(role => `<span class="service-tag">${role}</span>`).join('')}
+                    </div>
+                    <button class="vendor-apply" onclick="applyToVendor('${vendor.name}')">Apply</button>
+                </div>
+            `).join('');
+        }
+
+        function applyToVendor(vendorName) {
+            // Simulate application submission
+            console.log(`Application sent to ${vendorName}`);
+            
+            // Store application in localStorage for demo
+            const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+            applications.push({
+                vendor: vendorName,
+                timestamp: new Date().toISOString(),
+                status: 'pending'
+            });
+            localStorage.setItem('applications', JSON.stringify(applications));
+            
+            document.getElementById('applicationModal').style.display = 'flex';
+        }
+
+        // Initialize
+        document.getElementById('traditionalState').addEventListener('change', updateSenatorialZones);
+    </script>
+</body>
+</html>
